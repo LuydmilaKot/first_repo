@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>table</title>
+</head>
+
+<body class="my-class">
+<div>
+    <h1>Orders</h1>
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>cost</th>
+<!--            <th>client_id</th>-->
+            <th></th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.name }}</td>
+            <td>{{ order.cost }}</td>
+<!--            <td>{{ order.client_id }}</td>-->
+            <td>
+                <button onclick="deleteOrder('{{ order.id }}')">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div>
+    <h1>New Order</h1>
+    <form action="/order" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="cost">Cost:</label><br>
+        <input type="text" id="cost" name="cost"><br>
+        <label for="client_id">Client ID:</label><br>
+        <input type="text" id="client_id" name="client_id"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        function deleteOrder(client_id) {
+            fetch('/order/' + client_id, {
+                method: 'DELETE'
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        alert('Заказ успешно удален');
+                        window.location.href = '/order'; // Перенаправить на страницу "/order"
+                    } else {
+                        alert('Не удалось удалить заказ');
+                    }
+                })
+                .catch(function (error) {
+                    console.log('Произошла ошибка:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
